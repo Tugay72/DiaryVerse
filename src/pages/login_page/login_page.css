@@ -3,7 +3,8 @@
     justify-content: center;
     align-items: center;
     
-    background-image: url('../../assets/login_background.svg') !important;
+    /* background-image: url('../../assets/login_background.svg') !important; */
+    background-image: linear-gradient(90deg, rgb(0,0,0),rgb(188,188,188),rgb(0,0,0));
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -19,9 +20,8 @@
     display: flex;
     flex-direction: row;
 
-    gap: 16px;
 
-    background-color: aliceblue;
+    background-color: rgb(255, 255, 255);
     
     border-radius: 4px;
     box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.3);
@@ -39,22 +39,49 @@
 }
 
 .login-container-form{
-    
+    width: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 
-    margin: 0 0 0 6rem;
 }
 
-.login-container-form h2{
+.login-container-form-section{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 0 6rem 0;
     
-    font-family: 'Courier New', Courier, monospace;
 }
 
-#form-container{
+.login-container-form-section #menu-button{
+    width: 180px;
+    height: 64px;
+
+    margin-right: 1rem;
+    
+
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid black;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-container-form-section #menu-button:hover{
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid transparent;
+
+    background-color: black;
+    color: rgb(255, 255, 255);
+}
+
+
+/* #form-container{
     width: 16rem;
     padding: 2rem 2rem 0 2rem;
 
@@ -64,7 +91,7 @@
     background-color: rgba(255, 255, 255, 0.555);
     backdrop-filter: blur(4px);
 
-}
+} */
 
 .ant-input, .ant-input-password{
 
@@ -88,12 +115,23 @@
 }
 
 .ant-btn{
+    width: 80px;
+    height: 36px;
+
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid black;
     background-color: rgb(245, 245, 245);
     color: black;
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ant-btn:hover{
-    background-color: black;
-    color: white;
+    background-color: black !important;
+    color: white !important;
+    border-bottom: 1px solid black !important;
 }
+
+
+
 

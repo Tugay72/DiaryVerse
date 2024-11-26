@@ -1,7 +1,11 @@
 import React from "react";
 import "./login_page.css"
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 import { Button, Checkbox, Form, Input, message } from 'antd';
+
+import SignIn from "./sign_in";
+import SignUp from "./sign_up";
 
 import formImage from '../../assets/login_image.png'
 
@@ -14,7 +18,7 @@ const loginDetails = [{
 
 export default function LoginPage () {
     const [messageApi, contextHolder] = message.useMessage();
-    
+
     const navigate = useNavigate();
 
     //Correct information entered
@@ -35,7 +39,7 @@ export default function LoginPage () {
     
       };
 
-      const error = () => {
+    const error = () => {
         messageApi.open({
             type: 'error',
             content: 'Error!',
@@ -44,10 +48,42 @@ export default function LoginPage () {
 
 
       // False information entered
-      const onFinishFailed = (errorInfo) => {
+    const onFinishFailed = (errorInfo) => {
         error();
         console.log('Failed:', errorInfo);
-      };
+    };
+
+    const onSignUpFinish = (values) => {
+        console.log('Sign-Up Success:', values);
+        message.success('Account created successfully!');
+        // Add logic to save new user details, e.g., API call or updating local state.
+    };
+    
+    
+    const signUpFailed = (errorInfo) => {
+        error();
+        console.log('Failed:', errorInfo);
+    }
+
+    const [selectedContent, setSelectedContent] = useState(<SignIn onFinish={onFinish} onFinishFailed={onFinishFailed} />);
+    const handleSelect = (selection) => {
+        if (selection === 'SignUp') {
+            setSelectedContent(
+                <SignUp
+                    onFinish={onSignUpFinish}
+                    onFinishFailed={signUpFailed}
+                />
+            );
+        } else {
+            setSelectedContent(
+                <SignIn
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                />
+            );
+        }
+    };
+
 
     return (
         <div className="login-main">
@@ -58,50 +94,17 @@ export default function LoginPage () {
                 </div>
                 
                 <div className="login-container-form">
-                    <h2>Sign In</h2>
-                    <Form
-                        name="basic"
-                        wrapperCol={{span: 24}}
-                        initialValues={{remember: true}}
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
-                        autoComplete="off">
-
-                        <Form.Item
-                            name={['user', 'email']}
-                            rules={[
-                                {
-                                required: true,
-                                type: 'email',
-                                message: 'Please input your e-mail!'
-                                },
-                            ]}
-                            >
-                        
-                            <Input placeholder="E-mail"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Please input your password!',
-                                },
-                            ]}>
-                            <Input.Password placeholder="Password"/>
-                        </Form.Item>
-
-                        <Form.Item
-                            wrapperCol={{
-                                offset: 8,
-                                span: 16,
-                            }}>
-                            <Button type="primary" htmlType="submit">
-                                Submit
-                            </Button>
-                        </Form.Item>
-                    </Form>
+                    <div className="login-container-form-section">
+                        <section id="buttons">
+                            <menu>
+                                <Button id="menu-button" onClick={() => handleSelect("SignIn")}>Sign In</Button>
+                                <Button id="menu-button" onClick={() => handleSelect("SignUp")}>Sign Up</Button>
+                            </menu>
+                        </section>
+                    </div>
+                    <div className="selected-content">
+                        {selectedContent}
+                    </div>
                 </div>
             </div>
             {/* <span id="form-container">
