@@ -1,0 +1,16 @@
+.editor-container {
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 4px;
+    padding: 8px;
+    min-height: 360px;
+    min-width: 720px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    background-color: #fafafa;
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.2);
+}
+.editor-container:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+}
