@@ -13,7 +13,8 @@ const Navbar = () => {
 
   const menu1 = (
     <Menu>
-      <Menu.Item onClick={() => navigate('/meal_prep')}>Diaries</Menu.Item>
+      <Menu.Item onClick={() => navigate('/homepage')}>New Page</Menu.Item>
+      <Menu.Item onClick={() => navigate('/written_diaries')}>Written Diaries</Menu.Item>
     </Menu>
   );
 

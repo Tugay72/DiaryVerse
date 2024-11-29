@@ -26,7 +26,7 @@ export default function RichTextEditor() {
     };
 
     return (
-        <div>
+        <>
             <Toolbar 
                 toggleBlockType={toggleBlockType} 
                 toggleInlineStyle={toggleInlineStyle} 
@@ -39,6 +39,11 @@ export default function RichTextEditor() {
                     placeholder="What did you do today?"
                 />
             </div>
-        </div>
+            <button style={{
+                margin: '3rem 0 0 20rem',
+                width: '72px',
+                height: '32px'
+            }}>Save</button>
+        </>
     );
 }

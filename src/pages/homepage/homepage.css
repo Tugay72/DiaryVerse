@@ -13,8 +13,9 @@
 
 .digital-clock{
 
+    margin-top: 4rem;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 64px;
+    font-size: 60px;
     font-weight: 100;
 }
 
