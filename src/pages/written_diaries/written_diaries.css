@@ -30,7 +30,8 @@
     padding: 2rem;
 }
 
-.diary p, h2{
+.diary p, 
+.diary h2{
     font-family: 'Courier New', Courier, monospace;
     font-size: 16px;
     color: aliceblue;

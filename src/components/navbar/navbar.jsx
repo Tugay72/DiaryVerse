@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Menu, Dropdown } from 'antd';
 import './navbar.css';
-import {BookOutlined} from '@ant-design/icons';
+import {BookOutlined, UserOutlined} from '@ant-design/icons';
 
 
 const { Header } = Layout;
@@ -39,13 +39,20 @@ const Navbar = () => {
         style={{cursor: 'pointer', paddingBottom: '8px'}}
         onClick={() => navigate('/homepage')
 
-        }> <BookOutlined> </BookOutlined> My Diary
+        }> <BookOutlined/> My Diary
       </div>
       <div className="nav-labels">
         <Dropdown overlay={menu1} placement="bottom" arrow>
           <span className="nav-label">Diaries</span>
         </Dropdown>
       </div>
+      <div className='username'>
+        <UserOutlined></UserOutlined>
+        <p>Tugay</p>
+
+      </div>
+      
+      
     </Header>
   );
 };

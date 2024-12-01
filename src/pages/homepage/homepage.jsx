@@ -50,7 +50,7 @@ export default function Homepage() {
                 <h1 className='digital-clock'>{date}&nbsp;&nbsp;{time}</h1>
                 
                 <div className='homepage-text-field'>
-                    <MyTextField></MyTextField>
+                    <MyTextField date={date}></MyTextField>
                 </div>
             </div>
         </div>
