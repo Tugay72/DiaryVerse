@@ -9,35 +9,10 @@ import SignUp from "./sign_up";
 
 import formImage from '../../assets/login_image.png'
 
-const loginDetails = [{
-    email : "someone@example.com",
-    password : "admin135"
-}];
-
-
-
 export default function LoginPage () {
     const [messageApi, contextHolder] = message.useMessage();
 
     const navigate = useNavigate();
-
-    //Correct information entered
-    const onFinish = (values) => {
-        console.log('Success:', values);
-        
-        //Login deatils check
-        if (values.user.email === loginDetails[0].email && values.password === loginDetails[0].password){
-            console.log("Login Successful!")
-            navigate('/homepage');
-    
-            //......
-        }
-        else{
-            error();
-            console.log("Check your information again!");
-        }
-    
-      };
 
     const error = () => {
         messageApi.open({
@@ -46,8 +21,39 @@ export default function LoginPage () {
         });
     };
 
+    //Correct information entered
+    const onFinish = (values) => {
+        check_user(values);
+    };
+    
+    const check_user = async (values) => {
+        const queryParams = new URLSearchParams({
+            email: values.email,
+            password: values.password,
+        });
+      
+        console.log(values.email, values.password);
+        try {
+            const response = await fetch(`http://localhost:5000/get-user?${queryParams}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+      
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error:', errorData.error);
+                return;
+            }
+      
+            const responseData = await response.json();
+            console.log('Success:', responseData);
+            navigate('/homepage');
+        } catch (error) {
+            console.error('Error:', error);
+        }
+      };
 
-      // False information entered
+    // False information entered
     const onFinishFailed = (errorInfo) => {
         error();
         console.log('Failed:', errorInfo);
@@ -55,9 +61,36 @@ export default function LoginPage () {
 
     const onSignUpFinish = (values) => {
         console.log('Sign-Up Success:', values);
-        message.success('Account created successfully!');
-        // Add logic to save new user details, e.g., API call or updating local state.
+        save_new_user(values)
     };
+
+    const save_new_user = async (values) => {
+        const userData = {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+        };
+      
+        try {
+            const response = await fetch('http://localhost:5000/save-user', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+      
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error:', errorData.error);
+                return;
+            }
+      
+            const responseData = await response.json();
+            console.log('User saved successfully:', responseData);
+            message.success('Account created successfully!');
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
     
     
     const signUpFailed = (errorInfo) => {

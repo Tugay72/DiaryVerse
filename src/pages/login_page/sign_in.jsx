@@ -16,7 +16,7 @@ export default function SignIn({onFinish, onFinishFailed}){
                 autoComplete="off">
 
                 <Form.Item
-                    name={['user', 'email']}
+                    name="email"
                     rules={[
                         {
                         required: true,

@@ -1,7 +1,7 @@
 import './written_diaries.css';
 import { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar/navbar';
-import { DatePicker } from 'antd';
+import { Button, DatePicker } from 'antd';
 import moment from 'moment';  // ES6 import syntax
 
 export default function WrittenDiaries() {
@@ -13,12 +13,10 @@ export default function WrittenDiaries() {
     console.log(dateString);
   };
 
-  const getDiary = async (userId, date) => {
-    // Convert the selected date to 'DD/MM/YYYY' format
-    const formattedDate = moment(selectedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+  const getDiary = async (userId) => {
     
     try {
-      const response = await fetch(`http://localhost:5000/get-diaries/${userId}/${formattedDate}`);
+      const response = await fetch(`http://localhost:5000/get-diaries/${userId}/${selectedDate}`);
       if (!response.ok) {
         throw new Error('Failed to fetch diary');
       }
@@ -29,6 +27,27 @@ export default function WrittenDiaries() {
       console.error('Error fetching diary:', error);
     }
   };
+
+  const deleteDiary = async (userId = 1) => {
+    try {
+      const response = await fetch(`http://localhost:5000/delete-diary/${1}/${selectedDate}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete diary');
+      }
+  
+      const data = await response.json();
+      console.log(data.message); // Log the success message
+      // Optionally, you can update the state to remove the deleted diary
+      setDiary(prevDiaries => prevDiaries.filter(diary => diary.date !== selectedDate)); // Update state
+    } catch (error) {
+      console.error('Error deleting diary:', error);
+    }
+  };
+  
+  
   
 
   // Fetch the diary when the date is selected
@@ -46,20 +65,23 @@ export default function WrittenDiaries() {
         <div className='notebook'>
           <div className='diary'>
             {selectedDate && <p style={{ paddingLeft: '12rem' }}>Date: {selectedDate}</p>}
-            <h1>My Diary</h1>
+            <br />
 
-            {/* Check if a diary exists */}
-            {diary ? (
+            {diary && diary[0] && diary[0].text ? (
               <div>
-                <h2>{diary.date}</h2> {/* Display the diary's date */}
-                <p>{diary.text}</p>    {/* Display the diary's text */}
+                <p>{diary[0].text}</p>
               </div>
             ) : (
               <p>No diary found for this date</p>
             )}
+
           </div>
         </div>
-        <DatePicker onChange={onDateChange} />
+        <div className='actions-container'>
+          <DatePicker onChange={onDateChange} />
+          <Button style={{width: '128px'}} onClick={deleteDiary}>Delete this Diary</Button>
+        </div>
+        
       </div>
     </div>
   );

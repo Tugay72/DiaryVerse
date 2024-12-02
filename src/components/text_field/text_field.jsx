@@ -4,10 +4,19 @@ import { Editor } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './text_field.css'
 import Toolbar from './toolbar';
+import { message } from 'antd';
 
 export default function RichTextEditor(currentDate) {
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
     const [userId, setUserId] = useState(1);
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const error_message = (message) => {
+      messageApi.open({
+          type: 'error',
+          content: message,
+        });
+    };
 
     const handleKeyCommand = (command) => {
         const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -54,6 +63,7 @@ export default function RichTextEditor(currentDate) {
           }
         } catch (error) {
           console.error('Error saving diary:', error);
+          error_message("Already Exists!");
         }
       };      
       
@@ -62,6 +72,7 @@ export default function RichTextEditor(currentDate) {
 
     return (
         <>
+            {contextHolder}
             <Toolbar 
                 toggleBlockType={toggleBlockType} 
                 toggleInlineStyle={toggleInlineStyle} 
