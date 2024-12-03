@@ -105,9 +105,6 @@ app.get('/get-user', (req, res) => {
 });
 
 
-
-
-
 // API to save a diary entry
 app.post('/save-diary', (req, res) => {
   const { userId, text, date } = req.body;
@@ -144,7 +141,6 @@ app.post('/save-diary', (req, res) => {
   });
 });
 
-  
 
 // API to fetch diaries for a specific user and date
 app.get('/get-diaries/:userId/:date', (req, res) => {

@@ -1,19 +1,27 @@
 import './App.css';
-import React from 'react';
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from "./pages/login_page/login_page"
-import Homepage from './pages/homepage/homepage';
-import WrittenDiaries from './pages/written_diaries/written_diaries';
+import { UserProvider } from './context/userContext';
+
+const NotFound = lazy(() => import('./pages/not_found/not_found'))
+const LoginPage = lazy(() => import("./pages/login_page/login_page"));
+const Homepage = lazy(() => import("./pages/homepage/homepage"));
+const WrittenDiaries = lazy(() => import("./pages/written_diaries/written_diaries"));
 
 function App() {
   return (
-    <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/homepage" element={<Homepage />} />
-          <Route path="/written_diaries" element={<WrittenDiaries />} />
-        </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/homepage" element={<Homepage />} />
+            <Route path="/written_diaries" element={<WrittenDiaries />} />
+          </Routes>
+        </Suspense>
+      </Router>
+    </UserProvider>
   );
 }
 

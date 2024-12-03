@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Menu, Dropdown } from 'antd';
 import './navbar.css';
+import { UserContext } from '../../context/userContext';
 import {BookOutlined, UserOutlined} from '@ant-design/icons';
 
 
 const { Header } = Layout;
 
 const Navbar = () => {
-
+  const {userData} = useContext(UserContext);
   const navigate = useNavigate();
 
   const menu1 = (
@@ -48,7 +49,7 @@ const Navbar = () => {
       </div>
       <div className='username'>
         <UserOutlined></UserOutlined>
-        <p>Tugay</p>
+        <p>{userData ? userData.name : "Guest"}</p>
 
       </div>
       

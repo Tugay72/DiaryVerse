@@ -2,7 +2,6 @@ import './written_diaries.css';
 import { useState, useEffect } from 'react';
 import Navbar from '../../components/navbar/navbar';
 import { Button, DatePicker } from 'antd';
-import moment from 'moment';  // ES6 import syntax
 
 export default function WrittenDiaries() {
   const [selectedDate, setSelectedDate] = useState(null);

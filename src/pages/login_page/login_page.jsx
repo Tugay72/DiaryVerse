@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect }from "react";
 import "./login_page.css"
+import { UserContext } from '../../context/userContext';
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button, Checkbox, Form, Input, message } from 'antd';
 
 import SignIn from "./sign_in";
 import SignUp from "./sign_up";
 
+
 import formImage from '../../assets/login_image.png'
+
 
 export default function LoginPage () {
     const [messageApi, contextHolder] = message.useMessage();
+    const { setUserData } = useContext(UserContext);
+    const {userData} = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -47,11 +52,13 @@ export default function LoginPage () {
       
             const responseData = await response.json();
             console.log('Success:', responseData);
+            setUserData(responseData);
+            
             navigate('/homepage');
         } catch (error) {
             console.error('Error:', error);
         }
-      };
+    };
 
     // False information entered
     const onFinishFailed = (errorInfo) => {
