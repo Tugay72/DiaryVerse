@@ -7,6 +7,7 @@ import 'react-clock/dist/Clock.css';
 import MyTextField from '../../components/text_field/text_field';
 import StreakCalendar from '../../components/streak_calendar/streak_calendar';
 import { UserContext } from '../../context/userContext';
+import ReactEmojis from "@souhaildev/reactemojis";
 
 export default function Homepage() {
     const [time, setTime] = useState("");
@@ -54,15 +55,15 @@ export default function Homepage() {
         <div className='homepage-main-page'>
             <Navbar />
             <div className='homepage-main-container'>
-                <div className='homepage-center'>
-                    <h1 className='digital-clock'>{date}&nbsp;&nbsp;{time}</h1>
-                    
+                <div className='homepage-left'>
+                    <StreakCalendar userId = {userData ? userData.userId : 1} date={date} saveTrigger = {saveTrigger} />
+                </div>
+
+                <div className='homepage-right'>
                     <div className='homepage-text-field'>
+                        <h1 className='digital-clock'>{date}&nbsp;&nbsp;{time}</h1>
                         <MyTextField date={date} handleSave={handleSave}></MyTextField>
                     </div>
-                </div>
-                <div className='homepage-right'>
-                    <StreakCalendar userId = {userData ? userData.userId : 1} date={date} saveTrigger = {saveTrigger} />
                 </div>
 
             </div>
