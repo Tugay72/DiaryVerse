@@ -6,7 +6,7 @@ import './text_field.css'
 import Toolbar from './toolbar';
 import { message } from 'antd';
 
-export default function RichTextEditor(currentDate) {
+export default function RichTextEditor(currentDate, {handleSave}) {
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
     const [userId, setUserId] = useState(1);
     const [messageApi, contextHolder] = message.useMessage();
@@ -58,6 +58,7 @@ export default function RichTextEditor(currentDate) {
           if (response.ok) {
             const data = await response.json();
             console.log('Diary saved:', data);
+            currentDate.handleSave()
           } else {
             throw new Error('Failed to save diary');
           }

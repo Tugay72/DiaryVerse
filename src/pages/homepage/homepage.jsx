@@ -1,17 +1,18 @@
 import './homepage.css';
-import {react, useState, useEffect} from 'react';
+import {react, useState, useEffect, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/navbar/navbar';
 import Clock from 'react-clock';
 import 'react-clock/dist/Clock.css';
 import MyTextField from '../../components/text_field/text_field';
 import StreakCalendar from '../../components/streak_calendar/streak_calendar';
-
+import { UserContext } from '../../context/userContext';
 
 export default function Homepage() {
     const [time, setTime] = useState("");
     const [date, setDate] = useState("");
-    const [saveTrigger, setSaveTrigger] = useState(0)
+    const [saveTrigger, setSaveTrigger] = useState(0);
+    const {userData} = useContext(UserContext);
 
     // Update Date
     useEffect(() => {
@@ -57,11 +58,11 @@ export default function Homepage() {
                     <h1 className='digital-clock'>{date}&nbsp;&nbsp;{time}</h1>
                     
                     <div className='homepage-text-field'>
-                        <MyTextField date={date} ></MyTextField>
+                        <MyTextField date={date} handleSave={handleSave}></MyTextField>
                     </div>
                 </div>
                 <div className='homepage-right'>
-                    <StreakCalendar saveTrigger={saveTrigger} />
+                    <StreakCalendar userId = {userData ? userData.userId : 1} date={date} saveTrigger = {saveTrigger} />
                 </div>
 
             </div>

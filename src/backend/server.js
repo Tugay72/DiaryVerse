@@ -145,6 +145,7 @@ app.post('/save-diary', (req, res) => {
 // API to fetch diaries for a specific user and date
 app.get('/get-diaries/:userId/:date', (req, res) => {
   const { userId, date } = req.params;
+
   db.all("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, date], (err, rows) => {
     if (err) {
       console.error('Error fetching diaries:', err.message);
