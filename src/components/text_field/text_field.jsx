@@ -87,7 +87,6 @@ export default function RichTextEditor(currentDate, {handleSave}) {
       const newEditorState = EditorState.push(editorState, newContentState, 'insert-characters');
 
       setEditorState(newEditorState); // Update the editor state
-      setEmojiPicker(false); // Close emoji picker after selection
   };
       
     return (
@@ -96,15 +95,13 @@ export default function RichTextEditor(currentDate, {handleSave}) {
             <Toolbar 
                 toggleBlockType={toggleBlockType} 
                 toggleInlineStyle={toggleInlineStyle}
-            />
-            <button onClick={() => setEmojiPicker(prev => !prev)}>Emoji</button>
-            <div className='editor-container'>
-              <EmojiPicker 
+
+                // Emoji Picker Props
                 open={emojiPicker}
-                emojiStyle={'native'}
-                onEmojiClick={handleEmojiSelection}
-                
-              />
+                handleEmojiSelection={handleEmojiSelection}
+                setEmojiPicker={setEmojiPicker}
+            />
+            <div className='editor-container'>
 
               <Editor
                   editorState={editorState}
@@ -115,7 +112,7 @@ export default function RichTextEditor(currentDate, {handleSave}) {
             </div>
             
             <button style={{
-                margin: '2rem 0 0 20rem',
+                margin: '4rem 0 0 0',
                 width: '72px',
                 height: '32px'
             }}

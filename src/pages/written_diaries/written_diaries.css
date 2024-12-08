@@ -6,7 +6,7 @@
 
 .written-diaries-main-container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -20,8 +20,8 @@
     border: 2px solid wheat;
     border-radius: 2rem;
     box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
-    height: 765px;
-    width: 585px;
+    width: 1440px;
+    height: 480px;
 
     margin: 2rem 2rem 0 0;
 }
@@ -40,9 +40,11 @@
 .written-diaries-main-container .actions-container{
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-top: 10rem;
 
     gap: 32px;
 }
+

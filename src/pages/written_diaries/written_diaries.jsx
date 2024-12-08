@@ -45,9 +45,6 @@ export default function WrittenDiaries() {
       console.error('Error deleting diary:', error);
     }
   };
-  
-  
-  
 
   // Fetch the diary when the date is selected
   useEffect(() => {
@@ -61,9 +58,13 @@ export default function WrittenDiaries() {
     <div className='written-diaries-main-page'>
       <Navbar />
       <div className='written-diaries-main-container'>
+        <div className='actions-container'>
+          <DatePicker onChange={onDateChange} />
+          <Button style={{width: '128px'}} onClick={deleteDiary}>Delete this Diary</Button>
+        </div>
         <div className='notebook'>
           <div className='diary'>
-            {selectedDate && <p style={{ paddingLeft: '12rem' }}>Date: {selectedDate}</p>}
+            {selectedDate && <p>Date: {selectedDate}</p>}
             <br />
 
             {diary && diary[0] && diary[0].text ? (
@@ -75,10 +76,6 @@ export default function WrittenDiaries() {
             )}
 
           </div>
-        </div>
-        <div className='actions-container'>
-          <DatePicker onChange={onDateChange} />
-          <Button style={{width: '128px'}} onClick={deleteDiary}>Delete this Diary</Button>
         </div>
         
       </div>

@@ -57,7 +57,8 @@ export default function StreakContainer({ userId = 1, saveTrigger }) {
 
   return (
     <div>
-    <h3>Current Streak: {currentStreak}</h3>
+    <h3>🔥 {currentStreak}</h3>
+    <div></div>
       <div className="streak-container">
         {fontSizes.map((size, index) => (
           <span
