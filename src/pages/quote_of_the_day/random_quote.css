@@ -1,0 +1,22 @@
+
+.daily-quotes-main{
+    background-color: antiquewhite;
+    min-height: 100vh;
+}
+
+.daily-quotes-main-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 15%;
+}
+
+.daily-quotes-main p{
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-large;
+    font-weight: 700;
+    font-variant: small-caps;
+}

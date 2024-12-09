@@ -22,14 +22,13 @@
 
 .homepage-right{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     flex-grow: calc(1);
 }
 
 .digital-clock{
-
     margin-top: 32px;
     font-family: 'Courier New', Courier, monospace;
     font-size: 60px;

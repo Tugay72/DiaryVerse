@@ -14,8 +14,7 @@ import formImage from '../../assets/login_image.png'
 
 export default function LoginPage () {
     const [messageApi, contextHolder] = message.useMessage();
-    const { setUserData } = useContext(UserContext);
-    const {userData} = useContext(UserContext);
+    const {userData, setUserData} = useContext(UserContext);
 
     const navigate = useNavigate();
 

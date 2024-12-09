@@ -1,0 +1,80 @@
+{
+    "quotes": [
+      {
+        "type": "Motivation",
+        "text": "The best way to get started is to quit talking and begin doing.",
+        "author": "Walt Disney"
+      },
+      {
+        "type": "Motivation",
+        "text": "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+        "author": "Winston Churchill"
+      },
+      {
+        "type": "Motivation",
+        "text": "Dream big and dare to fail.",
+        "author": "Norman Vaughan"
+      },
+      {
+        "type": "Motivation",
+        "text": "Don't watch the clock; do what it does. Keep going.",
+        "author": "Sam Levenson"
+      },
+      {
+        "type": "Positivity",
+        "text": "Keep your face always toward the sunshine—and shadows will fall behind you.",
+        "author": "Walt Whitman"
+      },
+      {
+        "type": "Positivity",
+        "text": "Every day may not be good, but there’s something good in every day.",
+        "author": "Alice Morse Earle"
+      },
+      {
+        "type": "Positivity",
+        "text": "Happiness is not something ready made. It comes from your own actions.",
+        "author": "Dalai Lama"
+      },
+      {
+        "type": "Positivity",
+        "text": "Wherever you go, no matter what the weather, always bring your own sunshine.",
+        "author": "Anthony J. D’Angelo"
+      },
+      {
+        "type": "Resilience",
+        "text": "Hardships often prepare ordinary people for an extraordinary destiny.",
+        "author": "C.S. Lewis"
+      },
+      {
+        "type": "Resilience",
+        "text": "It does not matter how slowly you go as long as you do not stop.",
+        "author": "Confucius"
+      },
+      {
+        "type": "Resilience",
+        "text": "Out of difficulties grow miracles.",
+        "author": "Jean de La Bruyère"
+      },
+      {
+        "type": "Resilience",
+        "text": "Courage doesn't always roar. Sometimes courage is the little voice at the end of the day that says I'll try again tomorrow.",
+        "author": "Mary Anne Radmacher"
+      },
+      {
+        "type": "Gratitude",
+        "text": "Gratitude turns what we have into enough.",
+        "author": "Anonymous"
+      },
+      {
+        "type": "Gratitude",
+        "text": "Enjoy the little things, for one day you may look back and realize they were the big things.",
+        "author": "Robert Brault"
+      },
+      {
+        "type": "Gratitude",
+        "text": "Gratitude makes sense of our past, brings peace for today, and creates a vision for tomorrow.",
+        "author": "Melody Beattie"
+      }
+    ]
+  }
+  

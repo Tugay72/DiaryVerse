@@ -48,7 +48,7 @@ export default function Homepage() {
 
     const handleSave = () => {
         setSaveTrigger((prev) => prev + 1); // Increment the save trigger
-      };
+    };
 
     return (
         <div className='homepage-main-page'>

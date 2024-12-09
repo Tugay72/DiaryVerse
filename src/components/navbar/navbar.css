@@ -13,10 +13,11 @@
 
 .nav-labels {
     display: flex;
-    gap: 16px;
+    gap: 32px;
 }
 
 .nav-label {
+    display: flex;
     color: #ECF0F1;
     font-size: 1rem;
     cursor: pointer;
@@ -35,11 +36,6 @@
     color: #ECF0F1;
     cursor: pointer;
 }
-.navbar .username p {
-    margin: 0;
-    padding: 0;
-    line-height: 2;
-  }
 
 /* .navbar .username::after {
     content: '';
