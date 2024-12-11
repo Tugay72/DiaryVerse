@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { UserProvider } from './context/userContext';
 import ProtectedRoute from './protectedRoute';
 import DailyQuote from './pages/quote_of_the_day/random_quote';
+import ProfilePage from './pages/profile/profile';
 
 const NotFound = lazy(() => import('./pages/not_found/not_found'));
 const LoginPage = lazy(() => import("./pages/login_page/login_page"));
@@ -38,6 +39,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <DailyQuote />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
                 </ProtectedRoute>
               }
             />

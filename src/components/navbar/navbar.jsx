@@ -35,7 +35,7 @@ const Navbar = () => {
     <Menu style={{
       marginRight: '16px'
     }}>
-      <Menu.Item key="1" onClick={() => navigate('/')}>Profile</Menu.Item>
+      <Menu.Item key="1" onClick={() => navigate('/profile')}>Profile</Menu.Item>
       <Menu.Item key="2" onClick={() => logout()}>Logout</Menu.Item>
     </Menu>
   );

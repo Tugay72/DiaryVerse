@@ -1,6 +1,8 @@
 
 .daily-quotes-main{
-    background-color: antiquewhite;
+    background-image: url("../../../public/random_quote_bg.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
     min-height: 100vh;
 }
 
@@ -10,7 +12,7 @@
     align-items: center;
     justify-content: center;
 
-    margin-top: 15%;
+    margin-top: 48px;
 }
 
 .daily-quotes-main p{
@@ -19,4 +21,5 @@
     font-size: x-large;
     font-weight: 700;
     font-variant: small-caps;
+    color: whitesmoke;
 }
