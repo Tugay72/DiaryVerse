@@ -36,9 +36,9 @@ export default function LoginPage () {
             password: values.password,
         });
       
-        console.log(values.email, values.password);
+        console.log("Entered: ", values.email, values.password);
         try {
-            const response = await fetch(`http://localhost:5000/get-user?${queryParams}`, {
+            const response = await fetch(`http://localhost:5000/confirm-user?${queryParams}`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -48,12 +48,18 @@ export default function LoginPage () {
                 console.error('Error:', errorData.error);
                 return;
             }
-      
-            const responseData = await response.json();
-            console.log('Success:', responseData);
-            setUserData(responseData);
             
-            navigate('/homepage');
+            const responseData = await response.json();
+            if (responseData.success === true){
+                console.log('Success:', responseData);
+                setUserData(responseData.user);
+                navigate('/homepage');
+            }
+            else{
+                console.error('Error: Incorrect Password');
+                return;
+            }
+            
         } catch (error) {
             console.error('Error:', error);
         }

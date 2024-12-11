@@ -27,8 +27,9 @@ db.serialize(() => {
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT,
       email TEXT UNIQUE,
-      password TEXT
-    )
+      password TEXT,
+      total_diaries INTEGER DEFAULT 0
+    );
   `, (err) => {
     if (err) {
       console.error('Error creating table:', err.message);
@@ -53,7 +54,41 @@ db.serialize(() => {
       console.log('Table `diaries` is ready.');
     }
   });
+
+  db.run(`
+    CREATE TRIGGER IF NOT EXISTS increment_total_diaries
+    AFTER INSERT ON diaries
+    BEGIN
+        UPDATE users
+        SET total_diaries = total_diaries + 1
+        WHERE user_id = NEW.user_id;
+    END;
+  `, (err) => {
+    if (err) {
+      console.error('Error creating increment trigger:', err.message);
+    } else {
+      console.log('Trigger `increment_total_diaries` is ready.');
+    }
+  });
+
+  db.run(`
+    CREATE TRIGGER IF NOT EXISTS decrement_total_diaries
+    AFTER DELETE ON diaries
+    BEGIN
+        UPDATE users
+        SET total_diaries = total_diaries - 1
+        WHERE user_id = OLD.user_id;
+    END;
+
+  `, (err) => {
+    if (err) {
+      console.error('Error creating decrement trigger:', err.message);
+    } else {
+      console.log('Decrement `decrement_total_diaries` is ready.');
+    }
+  });
   
+
   
 });
 
@@ -77,7 +112,7 @@ app.put('/save-user', (req, res) => {
   );
 });
 
-app.get('/get-user', (req, res) => {
+app.get('/confirm-user', (req, res) => {
   const { email, password } = req.query; // Use req.query for GET parameters
 
   // Validate input
@@ -99,11 +134,37 @@ app.get('/get-user', (req, res) => {
         return res.status(404).json({ error: 'User not found or incorrect credentials' });
       }
 
-      res.json(row); // Return the user details
+      const { password, ...userWithoutPassword } = row;
+      res.json({ success: true, user: userWithoutPassword });
     }
   );
 });
 
+app.get('/get-user', (req, res) => {
+  const {email} = req.query;
+
+  if (!email){
+    return res.status(400).json({error : 'Email required!'})
+  }
+
+  db.get(
+    "SELECT * FROM users WHERE email = ?",
+    [email],
+    (err, row) => {
+      if (err) {
+        console.log('Error fetching user:', err.message);
+        return res.status(500).json({error: err.message});
+      }
+
+      if (!row) {
+        return res.status(400).json({error: 'User not found or incorrect credentials'})
+      }
+
+      const { password, ...userWithoutPassword } = row;
+      res.json(userWithoutPassword);
+    }
+  )
+})
 
 // API to save a diary entry
 app.post('/save-diary', (req, res) => {
@@ -179,8 +240,6 @@ app.delete('/delete-diary/:userId/:date', (req, res) => {
   );
 });
 
-
-  
 
 // Start the server
 app.listen(5000, () => {

@@ -7,9 +7,38 @@ import { Button, Modal, Space } from 'antd';
 import Navbar from '../../components/navbar/navbar';
 import { UserContext } from "../../context/userContext";
 
+import { useNavigate } from "react-router-dom";
+
 export default function ProfilePage(){
+    const navigate = useNavigate();
     const {userData, setUserData} = useContext(UserContext);
 
+
+    const get_user = async () => {
+        const queryParams = new URLSearchParams({
+            email: userData.email,
+        });
+
+        try {
+            const response = await fetch(`http://localhost:5000/get-user?${queryParams}`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+      
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error:', errorData.error);
+                return;
+            }
+      
+            const responseData = await response.json();
+            console.log('Success:', responseData);
+            setUserData(responseData);
+            
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
     const showDeleteConfirm = () => {
         Modal.confirm({
@@ -33,7 +62,9 @@ export default function ProfilePage(){
         //Apply logic to change users password
     }
     
-    
+    useEffect(() => {
+        get_user();
+    }, [])
 
     return(
         <div className="profile-main">

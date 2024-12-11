@@ -1,6 +1,6 @@
 .written-diaries-main-page{
 
-    background-image: linear-gradient(rgb(201, 201, 201),rgb(17, 17, 17),rgb(201, 201, 201));
+    background-image: linear-gradient(rgb(226, 226, 226),rgb(20, 20, 20));
     min-height: 100vh;
 }
 
@@ -17,7 +17,6 @@
     /* background-repeat: no-repeat;
     background-size: cover; */
     background-color: black;
-    border: 2px solid wheat;
     border-radius: 2rem;
     box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.5);
     width: 1440px;
