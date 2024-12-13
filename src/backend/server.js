@@ -166,6 +166,32 @@ app.get('/get-user', (req, res) => {
   )
 })
 
+app.patch('/change-password', (req, res) => {
+  const { email, newPassword } = req.body; // Parse JSON body
+
+  if (!email || !newPassword) {
+      return res.status(400).json({ error: 'Email and new password are required!' });
+  }
+
+  db.run(
+      'UPDATE users SET password = ? WHERE email = ?',
+      [newPassword, email],
+      function (err) {
+          if (err) {
+              console.error('Error updating password:', err.message);
+              return res.status(500).json({ error: 'Internal server error' });
+          }
+
+          if (this.changes === 0) {
+              return res.status(404).json({ error: 'User not found' });
+          }
+
+          console.log('Password updated successfully!');
+          res.status(200).json({ message: 'Password updated successfully!' });
+      }
+  );
+});
+
 // API to save a diary entry
 app.post('/save-diary', (req, res) => {
   const { userId, text, date } = req.body;
@@ -202,7 +228,6 @@ app.post('/save-diary', (req, res) => {
   });
 });
 
-
 // API to fetch diaries for a specific user and date
 app.get('/get-diaries/:userId/:date', (req, res) => {
   const { userId, date } = req.params;
@@ -215,7 +240,6 @@ app.get('/get-diaries/:userId/:date', (req, res) => {
     res.json(rows);
   });
 });
-  
   
 // API to delete a diary entry
 app.delete('/delete-diary/:userId/:date', (req, res) => {

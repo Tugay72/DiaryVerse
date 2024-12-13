@@ -53,7 +53,7 @@ export default function LoginPage () {
             if (responseData.success === true){
                 console.log('Success:', responseData);
                 setUserData(responseData.user);
-                navigate('/homepage');
+                navigate('/new_diary');
             }
             else{
                 console.error('Error: Incorrect Password');

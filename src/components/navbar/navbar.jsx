@@ -15,7 +15,7 @@ const Navbar = () => {
   const logout = () => {
 
     setUserData(null);
-    navigate('/')
+    navigate('/login_page')
   }
 
   const menu1 = (
@@ -44,10 +44,10 @@ const Navbar = () => {
     <Header className="navbar">
       <div
         className="logo"
-        style={{ cursor: 'pointer', paddingBottom: '8px' }}
+        style={{ cursor: 'pointer'}}
         onClick={() => navigate('/homepage')}
       >
-        <BookOutlined /> My Diary
+        <BookOutlined /> DiaryVerse
       </div>
       <div className="nav-labels">
         <Dropdown overlay={menu1} placement="bottom" arrow>

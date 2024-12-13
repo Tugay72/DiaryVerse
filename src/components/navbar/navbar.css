@@ -4,6 +4,8 @@
     align-items: center;
     padding: 0;
     width: 100%;
+
+    font-family: 'Courier New', Courier, monospace;
 }
 .navbar .logo {
     color: #ECF0F1;

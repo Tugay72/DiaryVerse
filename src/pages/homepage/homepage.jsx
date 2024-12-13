@@ -1,69 +1,120 @@
-import './homepage.css';
-import {react, useState, useEffect, useContext} from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../../components/navbar/navbar';
-import Clock from 'react-clock';
-import 'react-clock/dist/Clock.css';
-import MyTextField from '../../components/text_field/text_field';
-import StreakCalendar from '../../components/streak_calendar/streak_calendar';
-import { UserContext } from '../../context/userContext';
+import React from "react";
+import Navbar from "../../components/navbar/homepage_navbar/homepage_navbar";
+import Footer from "../../components/footer/footer";
+import "./homepage.css";
 
-export default function Homepage() {
-    const [time, setTime] = useState("");
-    const [date, setDate] = useState("");
-    const [saveTrigger, setSaveTrigger] = useState(0);
-    const {userData} = useContext(UserContext);
+export default function HomePage() {
+  return (
+    <div className="homepage">
+      <Navbar />
+      
+    {/* Hero Section */}
+    <section className="hero-section">
+    <div className="hero-content">
+        <h1>Capture Your Thoughts with DiaryVerse</h1>
+        <p>Write, reflect, and remember your moments every day. Start journaling now!</p>
+        <button style={{
+        width: '160px',
+        height: '32px',
+        fontSize: '16px',
+        border: '2px solid white'
+        }}>Start Writing</button>
+    </div>
+    </section>
 
-    // Update Date
-    useEffect(() => {
-        const updateDate = () => {
-            const now = new Date();
-            const day = now.getDate().toString().padStart(2, '0'); // Day of the month (1-31)
-            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, so add 1
-            const year = now.getFullYear(); // Full year (e.g., 2024)
-            setDate(`${day}/${month}/${year}`); // Format as DD/MM/YYYY
-        };
-
-        updateDate(); // Set the initial value
-        const interval = setInterval(updateDate, 60000); // Update every minute (date doesn't change every second)
-
-        return () => clearInterval(interval); // Cleanup interval
-    }, []);
-
-    //Update Clock
-    useEffect(() => {
-        const updateClock = () => {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            setTime(`${hours}:${minutes}:${seconds}`);
-        };
-
-        updateClock();
-        const interval = setInterval(updateClock, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    const handleSave = () => {
-        setSaveTrigger((prev) => prev + 1); // Increment the save trigger
-    };
-
-    return (
-        <div className='homepage-main-page'>
-            <Navbar />
-            <div className='homepage-main-container'>
-                <div className='homepage-left'>
-
-                    <h1 className='digital-clock'>{date}&nbsp;&nbsp;{time}</h1>
-                    <MyTextField date={date} handleSave={handleSave}></MyTextField>
-                </div>
-
-                <div className='homepage-right'>
-                    <StreakCalendar userId = {userData ? userData.userId : 1} date={date} saveTrigger = {saveTrigger} />
-                </div>
-            </div>
+    {/* Features Section */}
+    <section className="features-section">
+    <h2>Why Choose DiaryVerse?</h2>
+    <div className="features">
+        <div className="feature-card">
+        <h3>Simple and Intuitive</h3>
+        <p>Our app is designed to be easy to use, so you can start writing right away!</p>
         </div>
-    );
+        <div className="feature-card">
+        <h3>Privacy First</h3>
+        <p>Your thoughts are yours alone. Keep your entries private and secure.</p>
+        </div>
+        <div className="feature-card">
+        <h3>Track Your Progress</h3>
+        <p>See your writing journey evolve over time with built-in streaks and stats.</p>
+        </div>
+    </div>
+    </section>
+
+    {/* Explore Section */}
+    <section className="features-section" style={{
+        backgroundColor: 'white', padding: ' 96px 320px 240px 320px',
+        }}>
+
+        <h2 className="features-header">What You Can Do</h2>
+        <div className="features" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+        }}>
+            <div className="feature-card">
+                <div className="feature-icon">🔒</div>
+                <h3>Keep It Private</h3>
+                <p>Your diary is just for you. Secure your entries with a password and enjoy complete privacy!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">🌙</div>
+                <h3>Night Mode</h3>
+                <p>Switch to night mode to protect your eyes during late-night writing sessions. Your diary, your rules!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">📖</div>
+                <h3>Diary History</h3>
+                <p>Look back at past entries and memories. Your personal journal, always at your fingertips!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">🎉</div>
+                <h3>Milestone Achievements</h3>
+                <p>Celebrate your writing milestones with badges and rewards. A little motivation goes a long way!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">🕰️</div>
+                <h3>Time Travel</h3>
+                <p>Revisit entries by date, or read your past thoughts on a specific day. Time travel through your own life!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">📸</div>
+                <h3>Add Photos</h3>
+                <p>Enhance your entries with photos and images to make your stories even more vivid and personal!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">⏳</div>
+                <h3>Writing Timer</h3>
+                <p>Set a timer to encourage focused writing sessions. Challenge yourself to write without distractions!</p>
+            </div>
+
+            <div className="feature-card">
+                <div className="feature-icon">🧘</div>
+                <h3>Mood Tracking</h3>
+                <p>Track your mood over time with simple indicators. Reflect on how you’re feeling each day!</p>
+            </div>
+
+            </div>
+        </section>
+
+
+
+      {/* Sign Up Section */}
+      <section id="signup" className="signup-section">
+        <h2>Get Started Now</h2>
+        <p>Sign up today and start your journaling journey.</p>
+        <button style={{
+            width: '120px',
+            height: '32px'
+          }}>Sign Up</button>
+      </section>
+
+      <Footer />
+    </div>
+  );
 }

@@ -1,0 +1,30 @@
+.homepage-navbar {
+    display: flex;
+    align-items: center;
+    background-color: black;
+    color: whitesmoke;
+    max-width: 100%;
+}
+
+.homepage-navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.homepage-navbar .nav-labels {
+    display: flex;
+    margin: 0 32px 0 auto;
+}
+
+.homepage-navbar .nav-label {
+    padding: 5px 0;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+.homepage-navbar .nav-label:hover {
+    border-bottom: 1px solid whitesmoke;
+}
+
+  

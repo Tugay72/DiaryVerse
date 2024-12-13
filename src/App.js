@@ -5,10 +5,11 @@ import { UserProvider } from './context/userContext';
 import ProtectedRoute from './protectedRoute';
 import DailyQuote from './pages/quote_of_the_day/random_quote';
 import ProfilePage from './pages/profile/profile';
+import Homepage from './pages/homepage/homepage';
 
 const NotFound = lazy(() => import('./pages/not_found/not_found'));
 const LoginPage = lazy(() => import("./pages/login_page/login_page"));
-const Homepage = lazy(() => import("./pages/homepage/homepage"));
+const NewDiary = lazy(() => import("./pages/new_diary/new_diary"));
 const WrittenDiaries = lazy(() => import("./pages/written_diaries/written_diaries"));
 
 function App() {
@@ -17,12 +18,13 @@ function App() {
       <Router>
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            <Route path="/login_page" element={<LoginPage />} />
+            <Route path="/" element={<Homepage />} />
             <Route
-              path="/homepage"
+              path="/new_diary"
               element={
                 <ProtectedRoute>
-                  <Homepage />
+                  <NewDiary />
                 </ProtectedRoute>
               }
             />
