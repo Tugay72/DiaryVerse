@@ -1,0 +1,12 @@
+
+.timer{
+
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    color: whitesmoke;
+}

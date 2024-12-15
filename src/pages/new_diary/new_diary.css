@@ -10,15 +10,15 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
-    padding: 0 100px;
+    padding: 0 50px;
 }
 
-.new-diary-left{
+.new-diary-center{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: 120px;
+    margin-left: 48px;
 }
 
 .new-diary-right{

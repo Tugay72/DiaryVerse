@@ -18,10 +18,10 @@ export default function LoginPage () {
 
     const navigate = useNavigate();
 
-    const error = () => {
+    const error = (message) => {
         messageApi.open({
             type: 'error',
-            content: 'Error!',
+            content: message ? message : 'Error!',
         });
     };
 
@@ -46,6 +46,7 @@ export default function LoginPage () {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error('Error:', errorData.error);
+                error('Incorrect Email or Password!');
                 return;
             }
             
@@ -56,11 +57,13 @@ export default function LoginPage () {
                 navigate('/new_diary');
             }
             else{
+                error('Incorrect Password!');
                 console.error('Error: Incorrect Password');
                 return;
             }
             
         } catch (error) {
+            error('Incorrect Email or Password!');
             console.error('Error:', error);
         }
     };

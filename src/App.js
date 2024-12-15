@@ -13,51 +13,51 @@ const NewDiary = lazy(() => import("./pages/new_diary/new_diary"));
 const WrittenDiaries = lazy(() => import("./pages/written_diaries/written_diaries"));
 
 function App() {
-  return (
-    <UserProvider>
-      <Router>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/login_page" element={<LoginPage />} />
-            <Route path="/" element={<Homepage />} />
-            <Route
-              path="/new_diary"
-              element={
-                <ProtectedRoute>
-                  <NewDiary />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/written_diaries"
-              element={
-                <ProtectedRoute>
-                  <WrittenDiaries />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/daily_quote"
-              element={
-                <ProtectedRoute>
-                  <DailyQuote />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </Router>
-    </UserProvider>
-  );
+    return (
+        <UserProvider>
+            <Router>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Routes>
+                        <Route path="/login_page" element={<LoginPage />} />
+                        <Route path="/" element={<Homepage />} />
+                        <Route
+                            path="/new_diary"
+                            element={
+                                <ProtectedRoute>
+                                    <NewDiary />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/written_diaries"
+                            element={
+                                <ProtectedRoute>
+                                    <WrittenDiaries />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/daily_quote"
+                            element={
+                                <ProtectedRoute>
+                                    <DailyQuote />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/profile"
+                            element={
+                                <ProtectedRoute>
+                                    <ProfilePage />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </Suspense>
+            </Router>
+        </UserProvider>
+    );
 }
 
 export default App;

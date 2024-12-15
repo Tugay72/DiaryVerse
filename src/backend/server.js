@@ -28,13 +28,14 @@ db.serialize(() => {
       name TEXT,
       email TEXT UNIQUE,
       password TEXT,
-      total_diaries INTEGER DEFAULT 0
+      total_diaries INTEGER DEFAULT 0,
+      current_streak INTEGER DEFAULT 0
     );
   `, (err) => {
     if (err) {
       console.error('Error creating table:', err.message);
     } else {
-      console.log('Table `diaries` is ready.');
+      console.log('Table `users` is ready.');
     }
   });
 
@@ -192,42 +193,6 @@ app.patch('/change-password', (req, res) => {
   );
 });
 
-// API to save a diary entry
-app.post('/save-diary', (req, res) => {
-  const { userId, text, date } = req.body;
-
-  if (!userId || !text || !date) {
-    return res.status(400).json({ error: 'User ID, text, and date are required' });
-  }
-
-  const formattedDate = moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
-
-  // Check if an entry already exists for the user and date
-  db.get("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, formattedDate], (err, row) => {
-    if (err) {
-      console.error('Error querying database:', err.message);
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (row) {
-      // Entry already exists
-      return res.status(400).json({ error: 'Diary entry already exists for this date.' });
-    }
-
-    // If no entry exists, insert the new diary
-    db.run(
-      "INSERT INTO diaries (user_id, text, date) VALUES (?, ?, ?)", [userId, text, formattedDate],
-      function (err) {
-        if (err) {
-          console.error('Error inserting diary:', err.message);
-          return res.status(500).json({ error: err.message });
-        }
-        res.json({ id: this.lastID });
-      }
-    );
-  });
-});
-
 // API to fetch diaries for a specific user and date
 app.get('/get-diaries/:userId/:date', (req, res) => {
   const { userId, date } = req.params;
@@ -237,10 +202,60 @@ app.get('/get-diaries/:userId/:date', (req, res) => {
       console.error('Error fetching diaries:', err.message);
       return res.status(500).json({ error: err.message });
     }
-    res.json(rows);
+
+    if (rows.length === 0) {
+      return res.json({ message: 'No diary found for this date' });
+    }
+
+    db.get("SELECT total_diaries, current_streak, date FROM users WHERE user_id = ?", [userId], (err, user) => {
+      if (err) {
+        console.error('Error fetching user data:', err.message);
+        return res.status(500).json({ error: err.message });
+      }
+
+      const currentDate = moment(date, 'YYYY-MM-DD');
+      const previousDay = currentDate.clone().subtract(1, 'days');
+
+      if (user) {
+        const lastDiaryDate = moment(user.date, 'YYYY-MM-DD');
+
+        db.all("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, previousDay.format('YYYY-MM-DD')], (err, previousDayDiary) => {
+          if (err) {
+            console.error('Error fetching previous day diary:', err.message);
+            return res.status(500).json({ error: err.message });
+          }
+
+          let newStreak = user.current_streak;
+          if (previousDayDiary.length > 0) {
+            newStreak += 1;
+          } else {
+            newStreak = 0;
+          }
+
+          db.run(
+            "UPDATE users SET current_streak = ?, total_diaries = ? WHERE user_id = ?",
+            [newStreak, user.total_diaries + 1, userId],
+            (err) => {
+              if (err) {
+                console.error('Error updating user streak:', err.message);
+                return res.status(500).json({ error: err.message });
+              }
+
+              res.json({
+                message: 'Diary fetched successfully',
+                streak: newStreak,
+                diary: rows[0],
+              });
+            }
+          );
+        });
+      } else {
+        res.status(404).json({ error: 'User not found' });
+      }
+    });
   });
 });
-  
+
 // API to delete a diary entry
 app.delete('/delete-diary/:userId/:date', (req, res) => {
   const { userId, date } = req.params;
@@ -263,7 +278,6 @@ app.delete('/delete-diary/:userId/:date', (req, res) => {
     }
   );
 });
-
 
 // Start the server
 app.listen(5000, () => {

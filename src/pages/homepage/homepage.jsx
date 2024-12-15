@@ -2,8 +2,11 @@ import React from "react";
 import Navbar from "../../components/navbar/homepage_navbar/homepage_navbar";
 import Footer from "../../components/footer/footer";
 import "./homepage.css";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+    const navigate = useNavigate();
+
   return (
     <div className="homepage">
       <Navbar />
@@ -18,7 +21,9 @@ export default function HomePage() {
         height: '32px',
         fontSize: '16px',
         border: '2px solid white'
-        }}>Start Writing</button>
+        }}
+        onClick={() =>navigate('/login_page')}
+        >Start Writing</button>
     </div>
     </section>
 
@@ -64,27 +69,15 @@ export default function HomePage() {
             </div>
 
             <div className="feature-card">
-                <div className="feature-icon">📖</div>
-                <h3>Diary History</h3>
-                <p>Look back at past entries and memories. Your personal journal, always at your fingertips!</p>
-            </div>
-
-            <div className="feature-card">
-                <div className="feature-icon">🎉</div>
-                <h3>Milestone Achievements</h3>
-                <p>Celebrate your writing milestones with badges and rewards. A little motivation goes a long way!</p>
-            </div>
-
-            <div className="feature-card">
                 <div className="feature-icon">🕰️</div>
                 <h3>Time Travel</h3>
                 <p>Revisit entries by date, or read your past thoughts on a specific day. Time travel through your own life!</p>
             </div>
 
             <div className="feature-card">
-                <div className="feature-icon">📸</div>
-                <h3>Add Photos</h3>
-                <p>Enhance your entries with photos and images to make your stories even more vivid and personal!</p>
+                <div className="feature-icon">🙃</div>
+                <h3>Add Emojis</h3>
+                <p>Enhance your entries with emojis to make your stories even more vivid and personal!</p>
             </div>
 
             <div className="feature-card">
@@ -92,12 +85,24 @@ export default function HomePage() {
                 <h3>Writing Timer</h3>
                 <p>Set a timer to encourage focused writing sessions. Challenge yourself to write without distractions!</p>
             </div>
+            <div className="feature-card">
+                <div className="feature-icon">📝</div>
+                <h3>Rich Text Editing</h3>
+                <p>Enhance your writing with bold, italics, underlining, and more! Our editor, powered by Draft.js, allows you to format your text and express creativity with ease.</p>
+            </div>
+            <div className="feature-card">
+                <div className="feature-icon">🎉</div>
+                <h3>Milestone Achievements</h3>
+                <p>Celebrate your writing milestones with badges and rewards. A little motivation goes a long way!</p>
+            </div>
 
             <div className="feature-card">
-                <div className="feature-icon">🧘</div>
-                <h3>Mood Tracking</h3>
-                <p>Track your mood over time with simple indicators. Reflect on how you’re feeling each day!</p>
+                <div className="feature-icon">💬</div>
+                <h3>Random Inspiration</h3>
+                <p>Need a spark of motivation? Get a random quote every time you click the button on the random quotes page!</p>
             </div>
+
+
 
             </div>
         </section>

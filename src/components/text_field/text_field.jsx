@@ -45,7 +45,7 @@ export default function RichTextEditor(currentDate, {handleSave}) {
       // Prepare the data to send (you can pass the current date or omit it)
       const diaryData = {
         userId: 1,  // Replace with actual user ID
-        text: plainText,
+        text: rawContent,
         date: currentDate.date,  // Optional: Pass current date if needed
       };
     

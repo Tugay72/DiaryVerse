@@ -17,7 +17,7 @@ export default function ProfilePage() {
     const { userData, setUserData } = useContext(UserContext);
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [form] = Form.useForm(); // Initialize the form
+    const [form] = Form.useForm();
 
     const error_message = () => {
         messageApi.open({
@@ -144,8 +144,8 @@ export default function ProfilePage() {
                 <div className="user-information">
                     <p><b>🧙 Name:</b> {userData && userData.name ? userData.name : 'Guest'}</p>
                     <p><b>📧 E-mail:</b> {userData && userData.email ? userData.email : 'guest@welcome.com'}</p>
-                    <p><b>📖 Total Diaries:</b> {userData && userData.totalDiaries ? userData.totalDiaries : '0'}</p>
-                    <p><b>🔥 CurrentStreak:</b> {userData && userData.currentStreak ? userData.currentStreak : '0'}</p>
+                    <p><b>📖 Total Diaries:</b> {userData && userData.total_diaries ? userData.total_diaries : '0'}</p>
+                    <p><b>🔥 Current Streak:</b> {userData && userData.currentStreak ? userData.currentStreak : '0'}</p>
                 </div>
 
                 <span style={{

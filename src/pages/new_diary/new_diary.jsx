@@ -5,6 +5,7 @@ import Navbar from '../../components/navbar/navbar';
 import MyTextField from '../../components/text_field/text_field';
 import StreakCalendar from '../../components/streak_calendar/streak_calendar';
 import { UserContext } from '../../context/userContext';
+import Timer from '../../components/timer/timer';
 
 export default function NewDiary() {
     const [time, setTime] = useState("");
@@ -53,6 +54,9 @@ export default function NewDiary() {
             <Navbar />
             <div className='new-diary-main-container'>
                 <div className='new-diary-left'>
+                    <Timer></Timer>
+                </div>
+                <div className='new-diary-center'>
 
                     <h1 className='digital-clock'>{date}&nbsp;&nbsp;{time}</h1>
                     <MyTextField date={date} handleSave={handleSave}></MyTextField>
