@@ -45,6 +45,7 @@ db.serialize(() => {
       user_id INTEGER,
       text TEXT,
       date TEXT,
+      mood TEXT,
       UNIQUE(user_id, date),
       FOREIGN KEY (user_id) REFERENCES users(user_id)
     );
@@ -193,6 +194,45 @@ app.patch('/change-password', (req, res) => {
   );
 });
 
+// API to save a diary entry
+app.post('/save-diary', (req, res) => {
+  const { userId, text, date, mood } = req.body;
+  if (!userId || !text || !date) {
+    return res.status(400).json({ error: 'User ID, text, and date are required' });
+  }
+
+  if (!mood) {
+    mood = 'Nothing';
+  }
+
+  const formattedDate = moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+
+  // Check if an entry already exists for the user and date
+  db.get("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, formattedDate], (err, row) => {
+    if (err) {
+      console.error('Error querying database:', err.message);
+      return res.status(500).json({ error: err.message });
+    }
+
+    if (row) {
+      // Entry already exists
+      return res.status(400).json({ error: 'Diary entry already exists for this date.' });
+    }
+
+    // If no entry exists, insert the new diary
+    db.run(
+      "INSERT INTO diaries (user_id, text, date) VALUES (?, ?, ?)", [userId, text, formattedDate, mood],
+      function (err) {
+        if (err) {
+          console.error('Error inserting diary:', err.message);
+          return res.status(500).json({ error: err.message });
+        }
+        res.json({ id: this.lastID });
+      }
+    );
+  });
+});
+
 // API to fetch diaries for a specific user and date
 app.get('/get-diaries/:userId/:date', (req, res) => {
   const { userId, date } = req.params;
@@ -213,6 +253,7 @@ app.get('/get-diaries/:userId/:date', (req, res) => {
         return res.status(500).json({ error: err.message });
       }
 
+      // Get current streak
       const currentDate = moment(date, 'YYYY-MM-DD');
       const previousDay = currentDate.clone().subtract(1, 'days');
 

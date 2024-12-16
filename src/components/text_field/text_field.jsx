@@ -4,19 +4,21 @@ import { Editor } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import './text_field.css'
 import Toolbar from './toolbar';
-import { message } from 'antd';
-import EmojiPicker from 'emoji-picker-react';
+import { message, Modal } from 'antd';
+import MoodTracker from '../mood_tracker/mood_tracker';
 
-export default function RichTextEditor(currentDate, {handleSave}) {
+export default function RichTextEditor(currentDate, { handleSave }) {
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
     const [userId, setUserId] = useState(1);
     const [emojiPicker, setEmojiPicker] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
+    const [selectedMood, setSelectedMood] = useState(null);
+    const [isMoodModalOpen, setMoodIsModalOpen] = useState(false);
 
     const error_message = (message) => {
-      messageApi.open({
-          type: 'error',
-          content: message,
+        messageApi.open({
+            type: 'error',
+            content: message,
         });
     };
 
@@ -37,86 +39,108 @@ export default function RichTextEditor(currentDate, {handleSave}) {
         setEditorState(RichUtils.toggleInlineStyle(editorState, inlineStyle));
     };
 
+    const handleMoodChange = (mood) => {
+        setSelectedMood(mood);
+        console.log('Selected Mood:', mood);
+        setMoodIsModalOpen(false);
+    };
+
     const submitDiary = async () => {
-      const contentState = editorState.getCurrentContent();
-      const rawContent = convertToRaw(contentState);
-      const plainText = contentState.getPlainText();
-      
-      // Prepare the data to send (you can pass the current date or omit it)
-      const diaryData = {
-        userId: 1,  // Replace with actual user ID
-        text: rawContent,
-        date: currentDate.date,  // Optional: Pass current date if needed
-      };
-    
-      console.log(diaryData)
-      try {
-        const response = await fetch('http://localhost:5000/save-diary', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(diaryData),
-        });
-    
-        if (response.ok) {
-          const data = await response.json();
-          console.log('Diary saved:', data);
-          currentDate.handleSave()
-        } else {
-          throw new Error('Failed to save diary');
+        const contentState = editorState.getCurrentContent();
+        const rawContent = convertToRaw(contentState);
+        const plainText = contentState.getPlainText();
+
+        const diaryData = {
+            userId: 1,
+            text: rawContent,
+            date: currentDate.date,
+        };
+
+        console.log(diaryData);
+        try {
+            const response = await fetch('http://localhost:5000/save-diary', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(diaryData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Diary saved:', data);
+                currentDate.handleSave();
+            } else {
+                throw new Error('Failed to save diary');
+            }
+        } catch (error) {
+            console.error('Error saving diary:', error);
+            error_message("Already Exists!");
         }
-      } catch (error) {
-        console.error('Error saving diary:', error);
-        error_message("Already Exists!");
-      }
-    };      
-      
+    };
+
     const handleEmojiSelection = (emojiData) => {
-      const emoji = emojiData.emoji; // Selected emoji
+        const emoji = emojiData.emoji; // Selected emoji
 
-      const contentState = editorState.getCurrentContent();
-      const selectionState = editorState.getSelection();
+        const contentState = editorState.getCurrentContent();
+        const selectionState = editorState.getSelection();
 
-      // Insert emoji into content
-      const newContentState = Modifier.insertText(
-          contentState,
-          selectionState,
-          emoji
-      );
+        // Insert emoji into content
+        const newContentState = Modifier.insertText(
+            contentState,
+            selectionState,
+            emoji
+        );
 
-      // Create a new editor state with the updated content
-      const newEditorState = EditorState.push(editorState, newContentState, 'insert-characters');
+        // Create a new editor state with the updated content
+        const newEditorState = EditorState.push(editorState, newContentState, 'insert-characters');
+        setEditorState(newEditorState);
+    };
 
-      setEditorState(newEditorState); // Update the editor state
-  };
-      
     return (
         <>
             {contextHolder}
-            <Toolbar 
-                toggleBlockType={toggleBlockType} 
-                toggleInlineStyle={toggleInlineStyle}
+            <div style={{display: 'flex', flexDirection: 'row', gap: '850px'}}>
+                <Toolbar
+                    toggleBlockType={toggleBlockType}
+                    toggleInlineStyle={toggleInlineStyle}
 
-                // Emoji Picker Props
-                open={emojiPicker}
-                handleEmojiSelection={handleEmojiSelection}
-                setEmojiPicker={setEmojiPicker}
-            />
-            <div className='editor-container'>
-
-              <Editor
-                  editorState={editorState}
-                  onChange={setEditorState}
-                  handleKeyCommand={handleKeyCommand}
-                  placeholder="What did you do today?"
-              />
+                    // Emoji Picker Props
+                    open={emojiPicker}
+                    handleEmojiSelection={handleEmojiSelection}
+                    setEmojiPicker={setEmojiPicker}
+                />
+                <Modal
+                    title="Track Your Mood"
+                    visible={isMoodModalOpen}
+                    onCancel={() => setMoodIsModalOpen(false)}
+                    footer={null}
+                    >
+                    <MoodTracker
+                        onMoodChange={handleMoodChange}
+                        onClose={() => setMoodIsModalOpen(false)}
+                    />
+                </Modal>
+                <button
+                    onClick={() => setMoodIsModalOpen(true)}
+                    style={{ margin: '1px 0 10px 0'}}
+                >Mood</button>
             </div>
             
+            <div className='editor-container'>
+
+                <Editor
+                    editorState={editorState}
+                    onChange={setEditorState}
+                    handleKeyCommand={handleKeyCommand}
+                    placeholder="What did you do today?"
+                />
+            </div>
+
             <button style={{
                 margin: '4rem 0 0 0',
                 width: '72px',
                 height: '32px'
             }}
-            onClick={submitDiary}
+                onClick={submitDiary}
             >Save</button>
         </>
     );

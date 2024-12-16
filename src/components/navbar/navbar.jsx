@@ -60,7 +60,7 @@ const Navbar = () => {
                     <span className="nav-label">Diaries</span>
                 </Dropdown>
                 <Dropdown overlay={menu2} placement="bottom" arrow>
-                    <span className="nav-label">Quotes</span>
+                    <span className="nav-label">More</span>
                 </Dropdown>
             </div>
             <div className="username">

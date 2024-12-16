@@ -91,9 +91,9 @@ export default function HomePage() {
                 <p>Enhance your writing with bold, italics, underlining, and more! Our editor, powered by Draft.js, allows you to format your text and express creativity with ease.</p>
             </div>
             <div className="feature-card">
-                <div className="feature-icon">🎉</div>
-                <h3>Milestone Achievements</h3>
-                <p>Celebrate your writing milestones with badges and rewards. A little motivation goes a long way!</p>
+                <div className="feature-icon">😊</div>
+                <h3>Mood Tracker</h3>
+                <p>Track your daily mood and see how your emotions evolve over time. It's a great way to reflect on your mental well-being!</p>
             </div>
 
             <div className="feature-card">

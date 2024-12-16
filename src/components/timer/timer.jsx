@@ -16,7 +16,7 @@ function MyTimer({ expiryTimestamp, setIsModalVisible, onCustomTimeSet }) {
         resume,
         restart,
     } = useTimer({
-        expiryTimestamp,
+        expiryTimestamp: expiryTimestamp || new Date(),
         onExpire: () => console.warn('onExpire called'),
     });
 
