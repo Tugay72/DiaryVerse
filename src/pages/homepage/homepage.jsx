@@ -1,7 +1,7 @@
+import "./homepage.css";
 import React from "react";
 import Navbar from "../../components/navbar/homepage_navbar/homepage_navbar";
 import Footer from "../../components/footer/footer";
-import "./homepage.css";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {

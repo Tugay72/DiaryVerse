@@ -1,6 +1,6 @@
 import './sign_up.css'
 
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 export default function SignUp({ onFinish, onFinishFailed }) {
     return (
@@ -75,8 +75,12 @@ export default function SignUp({ onFinish, onFinishFailed }) {
                     <Input.Password placeholder="Confirm Password" />
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
+                <Form.Item 
+                wrapperCol={{ 
+                    offset: 8, 
+                    span: 16 
+                    }}>
+                    <Button htmlType="submit" style={{width: '80', height: '36'}}>
                         Sign Up
                     </Button>
                 </Form.Item>

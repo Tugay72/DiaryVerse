@@ -10,3 +10,22 @@
     font-size: 24px;
     color: whitesmoke;
 }
+
+.timer-input {
+    width: 100%;
+    max-width: 150px;
+    height: 32px;
+    text-align: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.timer-button {
+    width: 100%;
+    max-width: 120px;
+    padding: 6px 12px;
+    text-align: center;
+    margin-left: 12px;
+}

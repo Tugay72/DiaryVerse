@@ -1,4 +1,3 @@
-
 import './random_quote.css';
 import React, {useState, useEffect} from "react";
 import quotes from './quotes.json';

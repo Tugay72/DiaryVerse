@@ -1,17 +1,16 @@
+import './text_field.css'
 import React, { useState, useContext } from 'react';
 import { EditorState, RichUtils, convertToRaw, Modifier } from 'draft-js';
 import { Editor } from 'draft-js';
 import 'draft-js/dist/Draft.css';
-import './text_field.css'
-import Toolbar from './toolbar';
 import { message, Modal } from 'antd';
+import Toolbar from './toolbar';
 import MoodTracker from '../mood_tracker/mood_tracker';
 import { UserContext } from '../../context/userContext';
 
 export default function RichTextEditor(currentDate, { handleSave }) {
     const {userData} = useContext(UserContext);
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-    const [userId, setUserId] = useState(1);
     const [emojiPicker, setEmojiPicker] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
     const [selectedMood, setSelectedMood] = useState(null);
@@ -51,7 +50,7 @@ export default function RichTextEditor(currentDate, { handleSave }) {
         const contentState = editorState.getCurrentContent();
         const rawContent = convertToRaw(contentState);
         const plainText = contentState.getPlainText();
-    
+        
         console.log(userData)
         const diaryData = {
             userId: userData.user_id,

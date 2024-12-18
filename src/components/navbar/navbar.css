@@ -32,27 +32,7 @@
     gap: 8px;
     display: inline-flex;
     align-items: center;
-    /* position: relative;
-    border: 1px solid transparent; */
 
     color: #ECF0F1;
     cursor: pointer;
 }
-
-/* .navbar .username::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    height: 2px;
-    width: 0;
-    background-color: #ECF0F1;
-    transition: all 0.2s ease;
-    transform: translateX(-50%);
-}
-  
-.navbar .username:hover::after {
-    width: 100%;
-    left: 0;
-    transform: none;
-} */

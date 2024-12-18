@@ -1,9 +1,9 @@
+import './navbar.css';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Layout, Dropdown, Menu } from 'antd';
-import './navbar.css';
-import { UserContext } from '../../context/userContext';
 import { BookOutlined, UserOutlined } from '@ant-design/icons';
+import { UserContext } from '../../context/userContext';
 
 const { Header } = Layout;
 

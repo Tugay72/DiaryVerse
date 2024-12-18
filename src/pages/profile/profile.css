@@ -29,18 +29,13 @@
     top: 0;
 }
 
-p,
-h2{
-    font-family: 'Courier New', Courier, monospace;
-}
-
-/* .profile-header {
-
-    margin: 16px 0 120px 0;
-} */
-
 .profile-main .user-information{
     display: flex;
     flex-direction: column;
     margin: 0 0 0 48px;
+}
+
+.profile-main button{
+    width: 140px;
+    height: 28px;
 }

@@ -3,7 +3,7 @@ import EmojiPicker from 'emoji-picker-react';
 
 export default function Toolbar({ toggleBlockType, toggleInlineStyle, open, handleEmojiSelection, setEmojiPicker }) {
     return (
-        <div style={{ marginBottom: '10px' }}>
+        <div className='toolbar-main' style={{ marginBottom: '10px' }}>
             {/* Block styles */}
             <button onMouseDown={(e) => { e.preventDefault(); toggleBlockType('header-one'); }}>H1</button>
             <button onMouseDown={(e) => { e.preventDefault(); toggleBlockType('header-two'); }}>H2</button>

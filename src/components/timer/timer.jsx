@@ -1,9 +1,10 @@
 import './timer.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTimer } from 'react-timer-hook';
-import { Modal, Button, Input, Form } from 'antd';
+import { Modal, Input, Form, message } from 'antd';
 
 function MyTimer({ expiryTimestamp, setIsModalVisible, onCustomTimeSet }) {
+    const [messageApi, contextHolder] = message.useMessage();
     const {
         totalSeconds,
         seconds,
@@ -17,14 +18,25 @@ function MyTimer({ expiryTimestamp, setIsModalVisible, onCustomTimeSet }) {
         restart,
     } = useTimer({
         expiryTimestamp: expiryTimestamp || new Date(),
-        onExpire: () => console.warn('onExpire called'),
+        onExpire: () => {
+            console.warn('onExpire called');
+            timer_message();
+        },
     });
+
+    // Function to display a warning message when the timer ends
+    const timer_message = () => {
+        messageApi.open({
+            type: 'warning',
+            content: 'Times Up!',
+        });
+    };
 
     // Function to format the time with leading zeros
     const formatTime = (time) => (time < 10 ? `0${time}` : time);
 
     // If custom time is set, we need to restart the timer
-    React.useEffect(() => {
+    useEffect(() => {
         if (expiryTimestamp) {
             restart(expiryTimestamp); // Restart timer when custom time is updated
         }
@@ -33,6 +45,7 @@ function MyTimer({ expiryTimestamp, setIsModalVisible, onCustomTimeSet }) {
     return (
         <div className="timer">
             ⏲
+            {contextHolder}
             <div>
                 <span>{formatTime(days)}</span>:
                 <span>{formatTime(hours)}</span>:
@@ -56,7 +69,7 @@ function MyTimer({ expiryTimestamp, setIsModalVisible, onCustomTimeSet }) {
 
 export default function Timer() {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [customTime, setCustomTime] = useState(null); // Initially no custom time set
+    const [customTime, setCustomTime] = useState(null);
     const [form] = Form.useForm();
 
     // Handling form submission to set custom timer
@@ -64,18 +77,20 @@ export default function Timer() {
         const { days, hours, minutes, seconds } = values;
 
         // Calculate total seconds from user input
-        const totalSeconds = (days * 86400) + (hours * 3600) + (minutes * 60) + seconds;
+        const totalSeconds = (days * 86400) + (parseInt(hours) * 3600) + (parseInt(minutes) * 60) + parseInt(seconds);
         const time = new Date();
-        time.setSeconds(time.getSeconds() + totalSeconds); // Set the new expiry time
+        
+        time.setSeconds(time.getSeconds() + totalSeconds);
+        console.log(totalSeconds)
 
-        setCustomTime(time); // Update custom time
-        setIsModalVisible(false); // Close modal after setting time
+        setCustomTime(time);
+        setIsModalVisible(false);
     };
 
     return (
         <div>
             <MyTimer
-                expiryTimestamp={customTime}
+                expiryTimestamp={customTime} // Pass the custom time here
                 setIsModalVisible={setIsModalVisible}
                 onCustomTimeSet={setCustomTime}
             />
@@ -86,41 +101,43 @@ export default function Timer() {
                 footer={null}
             >
                 <Form
+                    layout="horizontal"
                     form={form}
                     onFinish={handleCustomTime}
                     initialValues={{ days: 0, hours: 0, minutes: 0, seconds: 0 }}
+                    labelCol={{ span: 8 }} // Align labels consistently
+                    wrapperCol={{ span: 16 }} // Align inputs
                 >
                     <Form.Item
                         label="Days"
                         name="days"
-                        rules={[{ required: true, message: 'Please input days!' }]}
-                    >
-                        <Input type="number" />
+                        rules={[{ required: true, message: 'Please input days!' }]}>
+                        <Input type="number" className="timer-input" />
                     </Form.Item>
+
                     <Form.Item
                         label="Hours"
                         name="hours"
-                        rules={[{ required: true, message: 'Please input hours!' }]}
-                    >
-                        <Input type="number" />
+                        rules={[{ required: true, message: 'Please input hours!' }]}>
+                        <Input type="number" className="timer-input" />
                     </Form.Item>
+
                     <Form.Item
                         label="Minutes"
                         name="minutes"
-                        rules={[{ required: true, message: 'Please input minutes!' }]}
-                    >
-                        <Input type="number" />
+                        rules={[{ required: true, message: 'Please input minutes!' }]}>
+                        <Input type="number" className="timer-input" />
                     </Form.Item>
+
                     <Form.Item
                         label="Seconds"
                         name="seconds"
-                        rules={[{ required: true, message: 'Please input seconds!' }]}
-                    >
-                        <Input type="number" />
+                        rules={[{ required: true, message: 'Please input seconds!' }]}>
+                        <Input type="number" className="timer-input" />
                     </Form.Item>
 
-                    <Form.Item>
-                        <button htmlType="submit">
+                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                        <button htmlType="submit" className="timer-button">
                             Set Timer
                         </button>
                     </Form.Item>

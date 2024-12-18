@@ -1,16 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
 import './profile.css';
-
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { Modal, message, Form, Input } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { Button, Modal, Space, message, Form, Input } from 'antd';
-
 import Navbar from '../../components/navbar/navbar';
 import { UserContext } from "../../context/userContext";
 
-import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
-    const navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -145,7 +142,7 @@ export default function ProfilePage() {
                     <p><b>🧙 Name:</b> {userData && userData.name ? userData.name : 'Guest'}</p>
                     <p><b>📧 E-mail:</b> {userData && userData.email ? userData.email : 'guest@welcome.com'}</p>
                     <p><b>📖 Total Diaries:</b> {userData && userData.total_diaries ? userData.total_diaries : '0'}</p>
-                    <p><b>🔥 Current Streak:</b> {userData && userData.currentStreak ? userData.currentStreak : '0'}</p>
+                    <p><b>🔥 Current Streak:</b> {userData && userData.current_streak ? userData.current_streak : '0'}</p>
                 </div>
 
                 <span style={{

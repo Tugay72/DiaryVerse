@@ -1,17 +1,14 @@
 import './new_diary.css';
-import {react, useState, useEffect, useContext} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState, useEffect, useContext} from 'react';
 import Navbar from '../../components/navbar/navbar';
 import MyTextField from '../../components/text_field/text_field';
 import StreakCalendar from '../../components/streak_calendar/streak_calendar';
-import { UserContext } from '../../context/userContext';
 import Timer from '../../components/timer/timer';
 
 export default function NewDiary() {
     const [time, setTime] = useState("");
     const [date, setDate] = useState("");
     const [saveTrigger, setSaveTrigger] = useState(0);
-    const {userData} = useContext(UserContext);
 
     // Update Date
     useEffect(() => {
@@ -46,7 +43,7 @@ export default function NewDiary() {
     }, []);
 
     const handleSave = () => {
-        setSaveTrigger((prev) => prev + 1); // Increment the save trigger
+        setSaveTrigger((prev) => prev + 1);
     };
 
     return (
@@ -63,7 +60,7 @@ export default function NewDiary() {
                 </div>
 
                 <div className='new-diary-right'>
-                    <StreakCalendar userId = {userData ? userData.user_id : 1} date={date} saveTrigger = {saveTrigger} />
+                    <StreakCalendar date={date} saveTrigger = {saveTrigger} />
                 </div>
             </div>
         </div>

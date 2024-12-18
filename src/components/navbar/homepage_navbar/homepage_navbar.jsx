@@ -1,6 +1,6 @@
+import './homepage_navbar.css';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from 'antd';
-import './homepage_navbar.css';
 import { BookOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;

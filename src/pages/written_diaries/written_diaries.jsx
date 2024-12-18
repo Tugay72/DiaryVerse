@@ -66,8 +66,8 @@ export default function WrittenDiaries() {
             console.log('Delete diary response data:', data); // Log response data for delete
             setDiary(null);
             setEditorState(EditorState.createEmpty());
-            setMood(null);  // Reset mood after deletion
-            message.success('Diary deleted successfully!');  // Display success message
+            setMood(null);
+            message.success('Diary deleted successfully!');
         } catch (error) {
             console.error('Error deleting diary:', error); // Log errors during delete
             message.error('Failed to delete diary');  // Display error message
@@ -87,7 +87,7 @@ export default function WrittenDiaries() {
                 <div className='actions-container'>
                     <DatePicker onChange={onDateChange} />
                     <Button
-                        style={{ width: '128px' }}
+                        style={{ width: '160px' }}
                         onClick={deleteDiary}
                         disabled={!selectedDate || !diary}
                     >

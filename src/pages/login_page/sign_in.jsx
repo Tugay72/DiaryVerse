@@ -1,6 +1,6 @@
 import './sign_in.css'
 
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 export default function SignIn({onFinish, onFinishFailed}){
     return(
@@ -45,7 +45,7 @@ export default function SignIn({onFinish, onFinishFailed}){
                         offset: 8,
                         span: 16,
                     }}>
-                    <Button htmlType="submit">
+                    <Button htmlType="submit" style={{width: '80', height: '36'}}>
                         Sign In
                     </Button>
                 </Form.Item>
