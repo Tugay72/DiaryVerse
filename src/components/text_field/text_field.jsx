@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { EditorState, RichUtils, convertToRaw, Modifier } from 'draft-js';
 import { Editor } from 'draft-js';
 import 'draft-js/dist/Draft.css';
@@ -6,8 +6,10 @@ import './text_field.css'
 import Toolbar from './toolbar';
 import { message, Modal } from 'antd';
 import MoodTracker from '../mood_tracker/mood_tracker';
+import { UserContext } from '../../context/userContext';
 
 export default function RichTextEditor(currentDate, { handleSave }) {
+    const {userData} = useContext(UserContext);
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
     const [userId, setUserId] = useState(1);
     const [emojiPicker, setEmojiPicker] = useState(false);
@@ -49,33 +51,41 @@ export default function RichTextEditor(currentDate, { handleSave }) {
         const contentState = editorState.getCurrentContent();
         const rawContent = convertToRaw(contentState);
         const plainText = contentState.getPlainText();
-
+    
+        console.log(userData)
         const diaryData = {
-            userId: 1,
+            userId: userData.user_id,
             text: rawContent,
             date: currentDate.date,
+            mood: selectedMood
         };
-
+    
         console.log(diaryData);
+    
         try {
             const response = await fetch('http://localhost:5000/save-diary', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(diaryData),
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Diary saved:', data);
-                currentDate.handleSave();
-            } else {
-                throw new Error('Failed to save diary');
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error response:', errorData);
+                error_message("Already Exists!");
+                return;
             }
+    
+            const data = await response.json();
+            console.log('Diary saved:', data);
+            currentDate.handleSave();
+            message.success("Diary saved successfully!");
         } catch (error) {
             console.error('Error saving diary:', error);
-            error_message("Already Exists!");
+            error_message("Failed to save diary!");
         }
     };
+    
 
     const handleEmojiSelection = (emojiData) => {
         const emoji = emojiData.emoji; // Selected emoji

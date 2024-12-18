@@ -95,24 +95,40 @@ db.serialize(() => {
 });
 
 app.put('/save-user', (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Name, email, and password are required' });
-  }
-
-  db.run(
-    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, password],
-    function (err) {
+    const { name, email, password } = req.body;
+  
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password are required' });
+    }
+  
+    // Check if the user already exists
+    db.get("SELECT * FROM users WHERE email = ?", [email], (err, row) => {
       if (err) {
-        console.error('Error saving user:', err.message);
+        console.error('Error checking user:', err.message);
         return res.status(500).json({ error: err.message });
       }
-
-      res.json({ userId: this.lastID }); // Return the ID of the inserted user
-    }
-  );
-});
+  
+      if (row) {
+        // User already exists
+        return res.status(409).json({ error: 'User already exists' }); // 409 Conflict
+      }
+  
+      // Insert new user if they don't exist
+      db.run(
+        "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        [name, email, password],
+        function (err) {
+          if (err) {
+            console.error('Error saving user:', err.message);
+            return res.status(500).json({ error: err.message });
+          }
+  
+          res.json({ userId: this.lastID });
+        }
+      );
+    });
+  });
+  
 
 app.get('/confirm-user', (req, res) => {
   const { email, password } = req.query; // Use req.query for GET parameters
@@ -194,109 +210,109 @@ app.patch('/change-password', (req, res) => {
   );
 });
 
-// API to save a diary entry
 app.post('/save-diary', (req, res) => {
-  const { userId, text, date, mood } = req.body;
-  if (!userId || !text || !date) {
-    return res.status(400).json({ error: 'User ID, text, and date are required' });
-  }
-
-  if (!mood) {
-    mood = 'Nothing';
-  }
-
-  const formattedDate = moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
-
-  // Check if an entry already exists for the user and date
-  db.get("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, formattedDate], (err, row) => {
-    if (err) {
-      console.error('Error querying database:', err.message);
-      return res.status(500).json({ error: err.message });
+    const { userId, text, date, mood } = req.body;
+  
+    // Check if required fields are provided
+    if (!userId || !text || !date) {
+      return res.status(400).json({ error: 'User ID, text, and date are required' });
     }
-
-    if (row) {
-      // Entry already exists
-      return res.status(400).json({ error: 'Diary entry already exists for this date.' });
-    }
-
-    // If no entry exists, insert the new diary
-    db.run(
-      "INSERT INTO diaries (user_id, text, date) VALUES (?, ?, ?)", [userId, text, formattedDate, mood],
-      function (err) {
-        if (err) {
-          console.error('Error inserting diary:', err.message);
-          return res.status(500).json({ error: err.message });
-        }
-        res.json({ id: this.lastID });
-      }
-    );
-  });
-});
-
-// API to fetch diaries for a specific user and date
-app.get('/get-diaries/:userId/:date', (req, res) => {
-  const { userId, date } = req.params;
-
-  db.all("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, date], (err, rows) => {
-    if (err) {
-      console.error('Error fetching diaries:', err.message);
-      return res.status(500).json({ error: err.message });
-    }
-
-    if (rows.length === 0) {
-      return res.json({ message: 'No diary found for this date' });
-    }
-
-    db.get("SELECT total_diaries, current_streak, date FROM users WHERE user_id = ?", [userId], (err, user) => {
+  
+    const formattedDate = moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+  
+    // Serialize the text if it is an object (assuming text is a rich-text format or object)
+    const serializedText = JSON.stringify(text);
+  
+    // Check if an entry already exists for the user and date
+    db.get("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, formattedDate], (err, row) => {
       if (err) {
-        console.error('Error fetching user data:', err.message);
+        console.error('Error querying database:', err.message);
         return res.status(500).json({ error: err.message });
       }
-
-      // Get current streak
-      const currentDate = moment(date, 'YYYY-MM-DD');
-      const previousDay = currentDate.clone().subtract(1, 'days');
-
-      if (user) {
-        const lastDiaryDate = moment(user.date, 'YYYY-MM-DD');
-
-        db.all("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, previousDay.format('YYYY-MM-DD')], (err, previousDayDiary) => {
+  
+      if (row) {
+        // Entry already exists
+        return res.status(400).json({ error: 'Diary entry already exists for this date.' });
+      }
+  
+      // If no entry exists, insert the new diary entry
+      db.run(
+        "INSERT INTO diaries (user_id, text, date, mood) VALUES (?, ?, ?, ?)", 
+        [userId, serializedText, formattedDate, mood],
+        function (err) {
           if (err) {
-            console.error('Error fetching previous day diary:', err.message);
+            console.error('Error inserting diary:', err.message);
             return res.status(500).json({ error: err.message });
           }
-
-          let newStreak = user.current_streak;
-          if (previousDayDiary.length > 0) {
-            newStreak += 1;
-          } else {
-            newStreak = 0;
-          }
-
-          db.run(
-            "UPDATE users SET current_streak = ?, total_diaries = ? WHERE user_id = ?",
-            [newStreak, user.total_diaries + 1, userId],
-            (err) => {
-              if (err) {
-                console.error('Error updating user streak:', err.message);
-                return res.status(500).json({ error: err.message });
-              }
-
-              res.json({
-                message: 'Diary fetched successfully',
-                streak: newStreak,
-                diary: rows[0],
-              });
+  
+          // Fetch the user's current streak and total diaries
+          db.get("SELECT current_streak, total_diaries FROM users WHERE user_id = ?", [userId], (err, user) => {
+            if (err || !user) {
+              return res.status(500).json({ error: 'Error fetching user data' });
             }
-          );
-        });
-      } else {
-        res.status(404).json({ error: 'User not found' });
-      }
+  
+            // Check if there is a diary for the previous day
+            const previousDay = moment(formattedDate, 'YYYY-MM-DD').subtract(1, 'days').format('YYYY-MM-DD');
+            db.get(
+              "SELECT * FROM diaries WHERE user_id = ? AND date = ?",
+              [userId, previousDay],
+              (err, prevDiary) => {
+                if (err) {
+                  return res.status(500).json({ error: 'Error checking previous day' });
+                }
+  
+                // Calculate the new streak
+                let newStreak = prevDiary ? user.current_streak + 1 : 1;
+  
+                // Update the user's streak and total diaries
+                db.run(
+                  "UPDATE users SET current_streak = ?, total_diaries = total_diaries + 1 WHERE user_id = ?",
+                  [newStreak, userId],
+                  (err) => {
+                    if (err) {
+                      console.error('Error updating streak:', err.message);
+                      return res.status(500).json({ error: 'Error updating streak' });
+                    }
+  
+                    // Return response with the new streak and diary ID
+                    res.json({
+                      message: 'Diary saved successfully',
+                      streak: newStreak,
+                      diaryId: this.lastID
+                    });
+                  }
+                );
+              }
+            );
+          });
+        }
+      );
     });
   });
-});
 
+  
+
+app.get('/get-diaries/:userId/:date', (req, res) => {
+    const { userId, date } = req.params;
+  
+    db.all("SELECT * FROM diaries WHERE user_id = ? AND date = ?", [userId, date], (err, rows) => {
+      if (err) {
+        console.error('Error fetching diaries:', err.message);
+        return res.status(500).json({ error: 'Error fetching diary data' });
+      }
+  
+      if (!rows || rows.length === 0) {
+        return res.json({ message: 'No diary found for this date', diary: null });
+      }
+  
+      // Return the diary data
+      res.json({
+        message: 'Diary fetched successfully',
+        diary: rows[0]
+      });
+    });
+  });
+  
 // API to delete a diary entry
 app.delete('/delete-diary/:userId/:date', (req, res) => {
   const { userId, date } = req.params;
@@ -319,6 +335,8 @@ app.delete('/delete-diary/:userId/:date', (req, res) => {
     }
   );
 });
+
+
 
 // Start the server
 app.listen(5000, () => {

@@ -63,7 +63,7 @@ export default function NewDiary() {
                 </div>
 
                 <div className='new-diary-right'>
-                    <StreakCalendar userId = {userData ? userData.userId : 1} date={date} saveTrigger = {saveTrigger} />
+                    <StreakCalendar userId = {userData ? userData.user_id : 1} date={date} saveTrigger = {saveTrigger} />
                 </div>
             </div>
         </div>

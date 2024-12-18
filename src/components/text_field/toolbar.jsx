@@ -21,7 +21,6 @@ export default function Toolbar({ toggleBlockType, toggleInlineStyle, open, hand
                     open={open}
                     emojiStyle={'native'}
                     onEmojiClick={handleEmojiSelection}
-                    
                 />
             </div>
         </div>

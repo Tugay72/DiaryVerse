@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Button, DatePicker, message } from 'antd';
 import Radio from 'antd/lib/radio';
 import './mood_tracker.css';
 
 const MoodTracker = ({ onMoodChange, onClose }) => {
-  const [mood, setMood] = useState(null);
+  const [mood, setMood] = useState('neutral');
 
   const onMoodSelect = (e) => {
     const selectedMood = e.target.value;
@@ -18,7 +17,7 @@ const MoodTracker = ({ onMoodChange, onClose }) => {
     <div className="mood-tracker-container">
       <div className="mood-picker">
         <div className="mood-options">
-          <Radio.Group onChange={onMoodSelect} value={mood}>
+          <Radio.Group onChange={onMoodSelect} value={mood} defaultValue={'neutral'}>
             <Radio value="happy">😊 Happy</Radio>
             <Radio value="sad">😢 Sad</Radio>
             <Radio value="neutral">😐 Neutral</Radio>
