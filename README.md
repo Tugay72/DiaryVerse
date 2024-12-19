@@ -89,7 +89,21 @@ Drajt.js for richtexteditor.
 Project Link: https://github.com/Tugay72/DiaryVerse
 
 ## Images
-![Homepage](github_assets/pcpal.png) 
+![Homepage](github_assets/4.png)
+
+
+![Log In / Sign Up](github_assets/5.png)
+
+
+![New Diary](github_assets/1.png)
+
+
+![Past Diaries](github_assets/2.png)
+
+
+![Random Quote](github_assets/3.png)
+
+
 
 ## Notes
 Adjustments: Modify the installation and usage instructions based on the actual setup for your project, especially if you're using specific frameworks or technologies.
