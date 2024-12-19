@@ -61,7 +61,6 @@ Prerequisites
    cd ../backend
    npm install
 
-
 ## Contributing
 1. Fork the repository.
 2. Create a new branch
