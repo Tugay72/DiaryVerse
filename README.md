@@ -59,9 +59,8 @@ Prerequisites
 4. Install dependencies for the backend:
    ```bash
    cd ../backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
+   npm install
+
 
 ## Contributing
 1. Fork the repository.
